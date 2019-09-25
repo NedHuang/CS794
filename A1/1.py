@@ -1,3 +1,5 @@
+from scipy import real
+from scipy.sparse.linalg import spsolve
 import math
 # load modules
 import matplotlib.pyplot as plt
@@ -12,6 +14,7 @@ import scipy
 from scipy.sparse import coo_matrix
 from scipy.sparse import csc_matrix
 from scipy.sparse import csr_matrix
+
 from scipy.sparse import diags
 from scipy.sparse import kron
 from scipy.sparse import identity
@@ -59,16 +62,18 @@ Dv_x = Dv_x.reshape(m,n)
 ##############################
 # show figures 
 plt.figure(2, figsize=(10, 10))
+plt.title('applied horizontal difference operator')
 plt.imshow(Dh_x, cmap='gray', vmin=0, vmax=255)
 # plt.show()
 
 plt.figure(3, figsize=(10, 10))
+plt.title('applied vertical difference operator')
 plt.imshow(Dv_x, cmap='gray', vmin=0, vmax=255)
 # plt.show()
 
 
 ##############################
-# Question 3
+# Question 2 add noise to img
 ##############################
 mean_ = 0
 standard_deviation = 30
@@ -79,25 +84,31 @@ noise = np.random.normal(mean_,standard_deviation,dimensions)
 noisy_image = img + noise
 
 plt.figure(4, figsize=(10, 10))
+plt.title('added noise to image')
 plt.imshow(noisy_image, cmap='gray', vmin=0, vmax=255)
-# plt.show()
 
-# compute euclidean distance of D, D = Dh +iDv 
-# Dh_x_dist = scipy.sparse.linalg.norm(Dh_x)
-# Dv_x_dist = scipy.sparse.linalg.norm(Dv_x)
+##############################
+# Quetion 3: Denoise the image.
+##############################
+from scipy.sparse.linalg import spsolve
+# This method can be used to solve linear systems.
+from scipy import real
+# This module can be used to convert arrays and matrices from complex to real.
 
-# Dh_x_dist = np.linalg.norm(Dh_x)
-# Dv_x_dist = np.linalg.norm(Dv_x)
-# print(Dh_x_dist)
-# print(Dv_x_dist)
-# D_x_dist = math.sqrt(math.pow(Dh_x_dist,2)+math.pow(Dv_x_dist,2))
-# print(D_x_dist)
-# # denoising 
-# z_noisy = csr_matrix(np.reshape(noisy_image,(n*m,1)))
-# # print(z_noisy)
-# x_z_noisy_dist = np.linalg.norm(x.toarray()-z_noisy.toarray())
-# print(x_z_noisy_dist)
+# Use the following lambda list to tune the denoising problem.
+lambda_list = [0.1, 3, 10]
 
-# # minimize lambda
-# l = math.pow(x_z_noisy_dist,2)/math.pow(D_x_dist,2)
-# print(l)
+# convert noisy_image to shape=(n*m, 1) matrix
+z_noisy = csr_matrix(np.reshape(noisy_image, (n*m, 1)))
+I_mn_mn = identity(m*n)
+count = 4
+for lambda_ in lambda_list:
+    count +=1
+    print(lambda_)
+    LHS = lambda_*real(Dh.transpose().dot(Dh) + Dv.transpose().dot(Dv)) + I_mn_mn
+    new_img = spsolve(LHS,z_noisy).reshape(m,n)
+    # print(LHS.shape)
+    plt.figure(count, figsize=(10, 10))
+    plt.title('lambda = ' + str(lambda_))
+    plt.imshow(new_img, cmap='gray', vmin=0, vmax=255)
+plt.show()
