@@ -29,7 +29,7 @@ n = img.shape[1] # COLS
 plt.figure(1, figsize=(10, 10))
 plt.imshow(img, cmap='gray', vmin=0, vmax=255)
 # plt.show()
-
+plt.savefig('Original.jpeg')
 
 ##############################
 # Question 1
@@ -64,11 +64,13 @@ Dv_x = Dv_x.reshape(m,n)
 plt.figure(2, figsize=(10, 10))
 plt.title('applied horizontal difference operator')
 plt.imshow(Dh_x, cmap='gray', vmin=0, vmax=255)
+plt.savefig('Applied_Horizontal_Difference_Operator.jpeg')
 # plt.show()
 
 plt.figure(3, figsize=(10, 10))
 plt.title('applied vertical difference operator')
 plt.imshow(Dv_x, cmap='gray', vmin=0, vmax=255)
+plt.savefig('Applied_Vertical_Difference_Operator.jpeg')
 # plt.show()
 
 
@@ -86,6 +88,7 @@ noisy_image = img + noise
 plt.figure(4, figsize=(10, 10))
 plt.title('added noise to image')
 plt.imshow(noisy_image, cmap='gray', vmin=0, vmax=255)
+plt.savefig('Added_Noise_to_Image.jpeg')
 
 ##############################
 # Quetion 3: Denoise the image.
@@ -111,4 +114,7 @@ for lambda_ in lambda_list:
     plt.figure(count, figsize=(10, 10))
     plt.title('lambda = ' + str(lambda_))
     plt.imshow(new_img, cmap='gray', vmin=0, vmax=255)
-plt.show()
+    plt.savefig('Denoised_Image_with_Lambda_=_%s.jpeg'%str(lambda_))
+# plt.show()
+
+print('Mission Complete')
