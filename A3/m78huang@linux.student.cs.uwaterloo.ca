@@ -432,11 +432,11 @@ plt.savefig('q6.png')
 # Q7 & call
 ###############################################################################
 
-max_interation_q7 = 1000
+max_interation_q7 = 100
 iterations_gd = []
 iterations_accelerated_gd = []
 mu_s = [0.01]+[i/10 for i in range(10)]+[i for i in range(50)]
-# mu_s = [1,5, 10]
+mu_s = [1,5, 10]
 for mu_ in mu_s:
     print(mu_)
     x_list_q1, denoise_result_q1, iterations_q1 = gradient_descent_armijo(x0, epsilon, lambda_, max_iterations, gamma_, mu_,clean_image)
