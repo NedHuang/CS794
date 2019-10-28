@@ -432,11 +432,10 @@ plt.savefig('q6.png')
 # Q7 & call
 ###############################################################################
 
-'''
 max_interation_q7 = 1000
 iterations_gd = []
 iterations_accelerated_gd = []
-mu_s = [0.01]+[i/10 for i in range(1,10)]+[i for i in range(50)]
+mu_s = [0.01]+[i/10 for i in range(1,10)]
 # mu_s = [1,5, 10]
 for mu_ in mu_s:
 
@@ -453,29 +452,24 @@ print(iterations_accelerated_gd)
 # write to csv
 import csv
 
-with open('iterations_gd.csv', mode='w') as iteration_file:
+with open('iterations_gd_001_20.csv', mode='w') as iteration_file:
     iteration_writer = csv.writer(iteration_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     iteration_writer.writerow(iterations_gd)
     iteration_writer.writerow(mu_s)
 
-with open('iterations_accelerated_gd.csv', mode='w') as iteration_file:
+with open('iterations_accelerated_gd_001_20.csv', mode='w') as iteration_file:
     iteration_writer = csv.writer(iteration_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     iteration_writer.writerow(iterations_accelerated_gd)
     iteration_writer.writerow(mu_s)    
-
 
 
 fig = plt.figure(figsize=(16, 12))
 plt.plot(mu_s, iterations_gd, label=("Armijo"), linewidth=2.0, color ="black")
 plt.plot(mu_s, iterations_accelerated_gd, label=("Accelerated + Armijo"), linewidth=2.0, color ="blue")
 plt.legend(prop={'size': 20},loc="upper right")
-plt.xlabel("mu", fontsize=25)
+plt.xlabel("mu $k$", fontsize=25)
 plt.ylabel("num of iterations", fontsize=25)
 plt.grid(linestyle='dashed')
 # plt.show()
 plt.savefig('q7.png')
-'''
-# running it will take a long time.
-# lets read and plot from the saved data
 
-import q7
