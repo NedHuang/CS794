@@ -14,3 +14,4 @@ running_time = time.time() - st
 predict_label = obj.predict(test_data)
 
 print(predict_label)
+

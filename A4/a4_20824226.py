@@ -109,7 +109,7 @@ def hingeloss_nonsmooth_stochastic_sub_gradient(A, x0, b, epsilon, max_iteration
 #         step_size = 0.5/(count+1)
         step_size = 1/(count+1)
         # sample_i
-        index = random.randint(0, A.shape[0])
+        index = random.randint(0, A.shape[0]-1)
         g = get_hingeloss_nonsmooth_gradient_i(A,x,b,index )
         x = x - step_size * g
         
@@ -133,6 +133,7 @@ class MyMethod:
         self.weight = None
         self.A_testing = None
         self.predicted_data = None
+        self.scaled_pred_data = None
     
     def fit(self, train_data, train_label):
         self.A_training = vec.fit_transform(train_data).tocsr()
@@ -161,8 +162,9 @@ class MyMethod:
         # print(type(self.A_testing),type(self.weight))
         # print(self.A_testing.shape,self.weight.shape)
         self.predicted_data = self.A_testing.dot(self.weight)
-        print('1231231',type(self.predicted_data))
-        return self.predicted_data
+
+        self.scaled_pred_data = np.where(self.predicted_data>0,1,-1)
+        return self.scaled_pred_data
 '''  
 obj = MyMethod()
 obj.fit(A,b)
